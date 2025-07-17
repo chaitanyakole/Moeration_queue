@@ -1,7 +1,14 @@
 import React from 'react';
 import { Check, X, Eye, AlertTriangle, User, Clock, CheckSquare, Square } from 'lucide-react';
+import LoadingSpinner from './LoadingSpinner';
 
 const PostList = ({ posts, selectedPosts, onPostSelect, onPostPreview, onApprove, onReject }) => {
+  const [imageLoaded, setImageLoaded] = React.useState({});
+
+  const handleImageLoad = (postId) => {
+    setImageLoaded(prev => ({ ...prev, [postId]: true }));
+  };
+
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
@@ -77,6 +84,19 @@ const PostList = ({ posts, selectedPosts, onPostSelect, onPostPreview, onApprove
                   )}
                 </button>
 
+                {/* Post Image */}
+                {post.images && post.images.length > 0 && (
+                  <div className="w-20 h-20 flex items-center justify-center">
+                    {!imageLoaded[post.id] && <LoadingSpinner />}
+                    <img
+                      src={post.images[0]}
+                      alt={post.title}
+                      className={`w-20 h-20 rounded object-cover flex-shrink-0 ${!imageLoaded[post.id] ? 'hidden' : ''}`}
+                      onLoad={() => handleImageLoad(post.id)}
+                    />
+                  </div>
+                )}
+
                 {/* Post Content */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between">
@@ -84,7 +104,7 @@ const PostList = ({ posts, selectedPosts, onPostSelect, onPostPreview, onApprove
                       {/* Post Title */}
                       <button
                         onClick={() => onPostPreview(post)}
-                        className="text-lg font-medium text-gray-900 hover:text-blue-600 text-left truncate block w-full"
+                        className="text-lg font-bold text-gray-900 hover:text-blue-600 text-left truncate block w-full"
                       >
                         {post.title}
                       </button>

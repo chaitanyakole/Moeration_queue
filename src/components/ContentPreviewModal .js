@@ -98,6 +98,17 @@ const ContentPreviewModal = ({ post, onClose, onApprove, onReject, posts, onNavi
 
           {/* Content */}
           <div className="space-y-6">
+            {/* Post Image */}
+            {post.images && post.images.length > 0 && (
+              <div className="flex justify-center">
+                <img
+                  src={post.images[0]}
+                  alt={post.title}
+                  className="rounded-lg object-cover max-h-72 max-w-full mb-4 shadow"
+                  style={{ width: 'auto' }}
+                />
+              </div>
+            )}
             {/* Post Title */}
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-4">{post.title}</h2>
